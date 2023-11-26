@@ -18,15 +18,13 @@
           <th @click="sortTable('inner_comment')">Внутренний комментарий</th>
           <th>
             <div @click="sortTable('daysToEnd')">Длительность</div>
-            <div>
-              <select v-model="filterValue" @change="filterByStatus">
+              <select>
                 <option value="Заканчивается сегодня">
                   Заканчивается сегодня
                 </option>
                 <option value="Не законченные">Не законченные</option>
                 <option value="Законченные">Законченные</option>
               </select>
-            </div>
           </th>
         </tr>
       </thead>
@@ -99,8 +97,6 @@ export default {
       }
       this.sortedData = this.data.slice().sort((a, b) => {
         // Сортировка данных в соответствии с выбранным столбцом и порядком сортировки
-        // const valA = a[column];
-        // const valB = b[column];
         const valA = a[column];
         const valB = b[column];
 
@@ -139,7 +135,7 @@ export default {
           } else {
             order.daysToEnd = `Закончилось сегодня`;
           }
-          //функция основывается на правилах русского языка для склонения числительных. Она выбирает правильное склонение слова "день" в зависимости от числа.
+          
           function formatDaysLabel(number) {
             const cases = [2, 0, 1, 1, 1, 2];
             return ["день", "дня", "дней"][
@@ -156,32 +152,7 @@ export default {
       }
     },
   },
-  computed: {
-    filteredData() {
-      // фильтрует данные в соответствии с выбранной опцией фильтрации
-      if (this.filterValue === "Заканчивается сегодня") {
-        return this.data.filter(
-          (item) => item.daysToEnd === "Заканчивается сегодня"
-        );
-      } else if (this.filterValue === "Не законченные") {
-        return this.data.filter((item) => item.daysToEnd !== "Не законченные");
-      } else if (this.filterValue === "Законченные") {
-        return this.data.filter((item) => item.daysToEnd === "Законченные");
-      } else {
-        return this.data; // Если ни один из фильтров не выбран, возвращаем исходные данные
-      }
-    },
-    sortedFilteredData() {
-      //сортирует отфильтрованные данные так, чтобы строки, соответствующие выбранному фильтру, находились в верхней части массива данных.
-      const filteredData = this.filteredData;
-      const unfilteredData = this.data.filter(
-        (item) => !filteredData.includes(item)
-      ); // Оставшиеся строки
-
-      // Сначала добавляем строки, удовлетворяющие фильтру, затем остальные
-      return filteredData.concat(unfilteredData);
-    },
-  },
+  
 };
 </script>
 
